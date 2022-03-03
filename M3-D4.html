@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+
+    <!--
+            You are creating the "shopping cart experience" for a Online Marketplace.
+            You have the list of the available books from the current API:
+            https://striveschool-api.herokuapp.com/books
+            What you have to do is:
+            0) Get all the products from the API using a fetch
+            1) Display the list of items available on the page using template literals `` and .forEach
+            2) Add a "add to cart button"
+            3) When the button is pressed, change the style of the item and add it to another list
+            4) Add "skip" button next to each item
+            5) When pressed, the button should remove from the page the item not interesting from the user
+            6) Add a "search bar". When the user types more than 3 chars, you should filter the content of the page to show only the items with a matching name (hint: use .filter method)
+            7) Allow the user to delete items from the cart list
+            
+            [EXTRA]
+            8) Add a "clean cart" button, to clean the whole list.
+            9) Create a second "detail page" for the product. When the user clicks on a product name, the app should redirect him to the secondary page, passing the ASIN in query string
+            10) In page "detail" show some details of the selected product (https://striveschool-api.herokuapp.com/books/1940026091 to fetch the details of a specific book)
+        -->
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css"
+        integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+
+    <title>Hello, world!</title>
+</head>
+
+<body>
+    <div class="container" id="container">
+        <input id="input">
+
+        <div class="row" id="row">
+
+
+        </div>
+    </div>
+
+
+
+    <script>
+
+
+        newList = []
+
+        const functionSkip = function (event) {
+            event.target.closest('.card').remove()
+        }
+
+
+
+
+        window.onload = () => {
+
+            function loadBooks() {
+                fetch("https://striveschool-api.herokuapp.com/books")
+                    .then((response) => {
+                        return response.json();
+                    })
+                    .then((data) => {
+                        let row = document.querySelector("#row");
+                        let input = document.querySelector('#input')
+                        console.log(data)
+
+                        data.forEach((obj, id) => {
+
+                            let col = document.createElement("div")
+                            col.className = "col"
+                            row.appendChild(col)
+                            let card = document.createElement("div")
+                            card.className = "card mb-5"
+                            card.style = "min-height: 400px; min-width:200px";
+                            col.appendChild(card)
+
+                            let image = document.createElement("img");
+                            image.style = "max-height: 150px; max-width:200px"
+                            image.src = obj.img;
+                            card.appendChild(image)
+
+                            let cardTitle = document.createElement("div")
+                            cardTitle.className = "card-title"
+                            cardTitle.innerText = obj.title
+                            card.appendChild(cardTitle)
+
+                            let cardPrice = document.createElement("div")
+                            cardPrice.className = "card-title"
+                            cardPrice.innerText = obj.price
+                            card.appendChild(cardPrice)
+
+                            let buttom = document.createElement("buttom")
+                            buttom.className = "btn btn-secondary"
+                            buttom.innerText = "add to cart"
+                            card.appendChild(buttom)
+                            buttom.addEventListener("click", function (event) {
+                                newList.push(obj)
+                                console.log(newList)
+                                buttom.innerText = "Added"
+
+                            })
+
+
+                            let skip = document.createElement("buttom")
+                            skip.className = "btn btn-secondary mt-2"
+                            skip.innerText = "skip"
+                            card.appendChild(skip)
+                            skip.addEventListener("click", functionSkip)
+
+
+                            // input.addEventListener("change", function (event) {
+                            //    let inputvalue = event.target.value
+                            //    const result = data.filter(value => inputvalue == obj.title);
+                            //   console.log(result)
+
+                            //  })
+
+
+                        });
+
+                    }).catch(error => {
+                        console.error(error)
+                    })
+            } loadBooks()
+        }
+
+
+
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF"
+        crossorigin="anonymous"></script>
+
+
+</body>
+
+</html>
